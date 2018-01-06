@@ -1,0 +1,12 @@
+'[1 2 3]
+[1 2 3\
+[1 2 3]
+(def v [1 2 3]_
+(def v [1 2 3])
+(print v)
+(def v '[1 2 3])
+v
+(= '[1 2 3] [1 2 3])
+(slurp "www.google.ch")
+(slurp "http://www.google.ch")
+(empty? "")
