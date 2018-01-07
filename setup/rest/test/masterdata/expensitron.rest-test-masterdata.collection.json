@@ -1,0 +1,167 @@
+{
+	"variables": [],
+	"info": {
+		"name": "expensitron",
+		"_postman_id": "de234d86-6c38-6499-b375-f19bbadc60e0",
+		"description": "requests for all CRUD ops to test the REST layer.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "C",
+			"description": "create ops",
+			"item": [
+				{
+					"name": "masterdata",
+					"description": "",
+					"item": [
+						{
+							"name": "create-masterdata-type",
+							"request": {
+								"url": "localhost:4000/api/masterdata/type",
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"type\" : \"supermarket\"\n}"
+								},
+								"description": "creates a masterdata type with all available attributes."
+							},
+							"response": []
+						},
+						{
+							"name": "create-masterdata-item",
+							"request": {
+								"url": "localhost:4000/api/masterdata",
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"name\" : \"massoutis\"\n\t\"type_id\" : 1\n}"
+								},
+								"description": "creates a masterdata item with a particular type and all available attributes."
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "R",
+			"description": "read ops",
+			"item": [
+				{
+					"name": "masterdata",
+					"description": "",
+					"item": [
+						{
+							"name": "read-all-masterdata-types",
+							"request": {
+								"url": "localhost:4000/api/masterdata/type/all",
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "read-one-masterdata-type",
+							"request": {
+								"url": "localhost:4000/api/masterdata/type/1",
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "read-one-masterdata-item",
+							"request": {
+								"url": "localhost:4000/api/masterdata/1",
+								"method": "GET",
+								"header": [],
+								"body": {},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "U",
+			"description": "update ops",
+			"item": [
+				{
+					"name": "masterdata",
+					"description": "",
+					"item": [
+						{
+							"name": "update-masterdata-type",
+							"request": {
+								"url": "localhost:4000/api/masterdata/type/1",
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"type\" : \"clothing store\"\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "update-masterdata-item",
+							"request": {
+								"url": "localhost:4000/api/masterdata/1",
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n \"name\" : \"h and m\"\n}"
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "D",
+			"description": "delete ops",
+			"item": [
+				{
+					"name": "delete-masterdata-item",
+					"request": {
+						"url": "localhost:4000/api/masterdata/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "delete-masterdata-type",
+					"request": {
+						"url": "localhost:4000/api/masterdata/type/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

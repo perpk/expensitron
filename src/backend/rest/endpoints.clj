@@ -4,6 +4,7 @@
             [backend.views.layout :as layout]
             [ring.util.response :refer [response]]
             [clojure.java.jdbc :as jdbc]
+            [java-jdbc.sql :as sql]
             [clojure.tools.logging :as log]
             [clojure.data.json :as json]
             [propertea.core :refer (read-properties)]
@@ -11,13 +12,13 @@
 
 (def db-connection-properties-file (.getPath (io/resource "db-connection.properties")))
 
-(def props (read-properties db-connection-properties-file))
+(def db-connection-properties (read-properties db-connection-properties-file))
 
-(def db-spec {:classname (props :classname)
-              :subprotocol (props :subprotocol)
-              :subname (props :subname)
-              :user (props :user)
-              :password (props :password) })
+(def db-spec {:classname (db-connection-properties :classname)
+              :subprotocol (db-connection-properties :subprotocol)
+              :subname (db-connection-properties :subname)
+              :user (db-connection-properties :user)
+              :password (db-connection-properties :password) })
 
 (defn pool [config]
   (let [cpds (doto (ComboPooledDataSource.)
@@ -35,20 +36,34 @@
 (defn db-connection [] @pooled-db)
 
 (defn read-masterdata-by-type [type]
-  (response {:type type}))
+  (jdbc/query (db-connection) :master_data_item (sql/where {:type_id type})))
 
 (defn read-masterdata-by-id [id]
-  (response {:id id}))
+  (jdbc/query (db-connection) (sql/select * :master_data_item (sql/where {:id (Integer/valueOf id)}))))
 
 (defn update-masterdata-by-id [id body]
-  (response {:id id :op "update"}))
+  (jdbc/update! (db-connection) :master_data_item (json/read-str body :key-fn keyword) (sql/where {:id (Integer/valueOf id)})))
 
 (defn delete-masterdata-by-id [id]
-  (response {:id id :op "delete"}))
+  (jdbc/delete! (db-connection) :master_data_item (sql/where {:id (Integer/valueOf id)})))
 
 (defn create-masterdata-record [body]
-  (jdbc/insert! (db-connection) :test (json/read-str body :key-fn keyword))
-  (response {:op "create"}))
+  (jdbc/insert! (db-connection) :master_data_item (json/read-str body :key-fn keyword)))
+
+(defn create-masterdata-type-route [body]
+  (jdbc/insert! (db-connection) :master_data_type (json/read-str body :key-fn keyword)))
+
+(defn read-all-masterdata-types []
+  (jdbc/query (db-connection) (sql/select * :master_data_type)))
+
+(defn read-masterdata-type-by-id [id]
+  (jdbc/query (db-connection) (sql/select * :master_data_type (sql/where {:id (Integer/valueOf id)}))))
+
+(defn update-masterdata-type-by-id [id body]
+  (jdbc/update! (db-connection) :master_data_type (json/read-str body :key-fn keyword) (sql/where {:id (Integer/valueOf id)})))
+
+(defn delete-masterdata-type-by-id [id]
+  (jdbc/delete! (db-connection) :master_data_type (sql/where {:id (Integer/valueOf id)})))
 
 (defn ping []
   (json/write-str {:response "pong"}))
@@ -62,6 +77,13 @@
       (context "/:id" [id] (defroutes masterdata-rud-routes
         (GET "/" [] (read-masterdata-by-id id))
         (PUT "/" {body :body} (update-masterdata-by-id id (slurp body)))
-        (DELETE "/" [] (delete-masterdata-by-id id))))))))
+        (DELETE "/" [] (delete-masterdata-by-id id))))
+      (context "/type" [] (defroutes masterdata-type-routes
+         (POST "/" {body :body} (create-masterdata-type-route (slurp body)))
+         (GET "/all" [] (read-all-masterdata-types))
+         (context "/:id" [id] (defroutes masterdata-type-rud-routes
+            (GET "/" [] (read-masterdata-type-by-id id))
+            (PUT "/" {body :body} (update-masterdata-type-by-id id (slurp body)))
+            (DELETE "/" [] (delete-masterdata-type-by-id id))))))))))
  (context "/admin" [] (defroutes admin
    (GET "/ping" [] (ping)))))

@@ -26,3 +26,10 @@ v
 (data-file)
 ((data-file)(.getPath))
 (.getPath data-file)
+((delay
+(println (+ 1 1)
+)))
+((delay
+(println (+1 1))
+(println (+2 2)))
+)
