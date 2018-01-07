@@ -1,0 +1,5 @@
+classname=org.postgresql.Driver
+subprotocol=postgresql
+subname=
+user=
+password

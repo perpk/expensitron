@@ -12,7 +12,8 @@
                  [java-jdbc/dsl "0.1.0"]
                  [org.postgresql/postgresql "9.2-1003-jdbc4"]
                  [org.clojure/tools.logging "0.4.0"]
-                 [org.clojure/data.json "0.2.6"]]
+                 [org.clojure/data.json "0.2.6"]
+                 [propertea "1.2.3"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler backend.handler/app
          :init backend.handler/init

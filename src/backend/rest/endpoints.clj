@@ -5,13 +5,19 @@
             [ring.util.response :refer [response]]
             [clojure.java.jdbc :as jdbc]
             [clojure.tools.logging :as log]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [propertea.core :refer (read-properties)]
+            [clojure.java.io :as io]))
 
-(def db-spec {:classname "org.postgresql.Driver"
-              :subprotocol "postgresql"
-              :subname "//localhost:5432/training"
-              :user "kpax"
-              :password "6kwwW3cV" })
+(def db-connection-properties-file (.getPath (io/resource "db-connection.properties")))
+
+(def props (read-properties db-connection-properties-file))
+
+(def db-spec {:classname (props :classname)
+              :subprotocol (props :subprotocol)
+              :subname (props :subname)
+              :user (props :user)
+              :password (props :password) })
 
 (defn pool [config]
   (let [cpds (doto (ComboPooledDataSource.)

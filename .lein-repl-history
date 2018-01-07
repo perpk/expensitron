@@ -10,3 +10,19 @@ v
 (slurp "www.google.ch")
 (slurp "http://www.google.ch")
 (empty? "")
+(def props {:a 1 :b 2})
+(props :a)
+@props
+(def data-file (io/resource "db-connection.properties"))
+(:require [clojure.java.io :as io])
+(require '(clojure.java.io :as io))
+(require 'clojure.java.io
+)
+(def data-file (io/resource "db-connection.properties"))
+(require 'clojure.java.io :as io)
+(def data-file (clojure.java.io/resource "db-connection.properties"))
+(slurp data-file)
+@data-file
+(data-file)
+((data-file)(.getPath))
+(.getPath data-file)
