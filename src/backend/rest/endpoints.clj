@@ -10,8 +10,8 @@
 (def db-spec {:classname "org.postgresql.Driver"
               :subprotocol "postgresql"
               :subname "//localhost:5432/training"
-              :user ""
-              :password "" })
+              :user "kpax"
+              :password "6kwwW3cV" })
 
 (defn pool [config]
   (let [cpds (doto (ComboPooledDataSource.)
