@@ -5,6 +5,7 @@
             [backend.repos.master.master-data :refer :all]))
 
 (def record-name "wal-mart")
+(def record-name-updated "K-mart")
 
 (describe "testing masterdata record CRUDs"
           (before-all
@@ -23,6 +24,15 @@
               (should-not (nil? ((first record) :name))))
           (it "record should have the same name as the one it was created with"
               (should (= record-name ((first record) :name))))
+          (it "record should have another name after its update"
+              (update-masterdata-by-id ((first record) :id) {:name record-name-updated})
+              (let [updated (read-masterdata-by-id ((first record) :id))]
+                (should (= ((first updated) :name) record-name-updated))))
+          (it "record should not exist anymore after its deletion"
+              (let [new (create-masterdata-record {:name "todelete" :type_id ((first type) :id)})]
+                (delete-masterdata-by-id ((first new) :id))
+                (let [read (read-masterdata-by-id ((first new) :id))]
+                  (should (nil? (first read))))))
           (after-all
             (delete-masterdata-by-id ((first record) :id))
             (delete-masterdata-type-by-id ((first type) :id))
