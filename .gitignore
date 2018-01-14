@@ -14,3 +14,7 @@ pom.xml
 \.idea/
 
 \.nrepl-port
+
+\.lein-repl-history
+
+*.iml

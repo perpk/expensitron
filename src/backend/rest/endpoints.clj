@@ -19,12 +19,12 @@
 (defroutes rest-routes
  (context "/api" [] (defroutes api-routes
     (context "/masterdata" [] (defroutes masterdata-routes
-      (POST "/" {body :body} (master-data-repo/create-masterdata-record (slurp body)))
+      (POST "/" {body :body} (master-data-repo/create-masterdata-record ((read-json (slurp body)))))
       (context "/read" [] (defroutes masterdata-route-read-type
         (GET "/:type" [type] (master-type-repo/read-masterdata-by-type type))))
       (context "/:id" [id] (defroutes masterdata-rud-routes
         (GET "/" [] (master-data-repo/read-masterdata-by-id id))
-        (PUT "/" {body :body} (master-data-repo/update-masterdata-by-id id (slurp body)))
+        (PUT "/" {body :body} (master-data-repo/update-masterdata-by-id (id-to-int id) ((read-json (slurp body)))))
         (DELETE "/" [] (master-data-repo/delete-masterdata-by-id id))))
       (context "/type" [] (defroutes masterdata-type-routes
          (POST "/" {body :body} (master-type-repo/create-masterdata-type-route (read-json (slurp body))))

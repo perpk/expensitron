@@ -14,7 +14,8 @@
                  [org.clojure/tools.logging "0.4.0"]
                  [org.clojure/data.json "0.2.6"]
                  [propertea "1.2.3"]]
-  :plugins [[lein-ring "0.8.12"]]
+  :plugins [[lein-ring "0.8.12"]
+            [speclj "3.3.0"]]
   :ring {:handler backend.handler/app
          :init backend.handler/init
          :destroy backend.handler/destroy}
@@ -24,4 +25,7 @@
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
-   {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.5.1"]]}})
+   {:dependencies [[ring-mock "0.1.5"]
+                   [ring/ring-devel "1.5.1"]
+                   [speclj "3.3.0"]]}}
+  :test-paths ["specs"])
